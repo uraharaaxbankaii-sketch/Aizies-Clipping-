@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aizies Clipping</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#09090d;color:white;font-family:Arial,sans-serif}
+header{padding:22px 16px;border-bottom:1px solid #252530}
+.logo{font-size:25px;font-weight:900;color:#ff304f}
+.logo span{color:white}
+main{max-width:900px;margin:auto;padding:24px 16px}
+h1{font-size:34px;margin-bottom:8px}
+p{color:#aaa}
+input{width:100%;padding:15px;border-radius:10px;border:1px solid #333;background:#17171f;color:white;font-size:16px}
+.categories{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}
+button{background:#20202a;color:white;border:1px solid #333;padding:10px 14px;border-radius:20px;cursor:pointer}
+button.active{background:#ff304f;border-color:#ff304f}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:14px}
+.card{background:#17171f;border:1px solid #292933;border-radius:14px;padding:16px}
+.thumb{height:110px;background:linear-gradient(135deg,#35131d,#17172c);border-radius:10px;display:grid;place-items:center;font-size:38px}
+.card h3{margin-bottom:6px}
+.card p{font-size:13px}
+a{display:block;text-decoration:none;text-align:center;background:#ff304f;color:white;padding:11px;border-radius:8px;font-weight:bold}
+footer{text-align:center;color:#777;padding:30px}
+</style>
+</head>
+<body>
+<header><div class="logo">AIZIES <span>CLIPPING</span></div></header>
+<main>
+<h1>Find Your Next Viral Clip.</h1>
+<p>Discover clips for edits, shorts and content creation.</p>
+<input id="search" placeholder="Search clips..." oninput="render()">
+<div class="categories" id="categories"></div>
+<div class="grid" id="clips"></div>
+</main>
+<footer>© 2026 Aizies Clipping</footer>
+<script>
+const data=[
+{title:"Motivation",cat:"Motivation",emoji:"🔥",url:""},
+{title:"Anime Moments",cat:"Anime",emoji:"⚡",url:""},
+{title:"Gaming Clips",cat:"Gaming",emoji:"🎮",url:""},
+{title:"Podcast Clips",cat:"Podcasts",emoji:"🎙️",url:""},
+{title:"Cinematic Edits",cat:"Edits",emoji:"🎬",url:""},
+{title:"Sports Highlights",cat:"Sports",emoji:"🏆",url:""}
+];
+let selected="All";
+const categories=document.getElementById("categories");
+function render(){
+categories.innerHTML="";
+["All",...new Set(data.map(x=>x.cat))].forEach(c=>{
+let b=document.createElement("button");
+b.textContent=c;
+b.className=selected===c?"active":"";
+b.onclick=()=>{selected=c;render()};
+categories.appendChild(b);
+});
+let q=document.getElementById("search").value.toLowerCase();
+let filtered=data.filter(x=>(selected==="All"||x.cat===selected)&&x.title.toLowerCase().includes(q));
+document.getElementById("clips").innerHTML=filtered.map(x=>
+`<div class="card"><div class="thumb">${x.emoji}</div><h3>${x.title}</h3><p>${x.cat} clips</p><a href="${x.url||'https://www.youtube.com/'}" target="_blank" rel="noopener">Watch Clips ↗</a></div>`
+).join("");
+}
+render();
+</script>
+</body>
+</html>
